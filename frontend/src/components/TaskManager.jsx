@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// ✅ Load API base URL from environment variable
+const API_URL = process.env.REACT_APP_API_URL;
+
 function TaskManager() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
 
   const fetchTasks = async () => {
-    const res = await axios.get("http://localhost:5000/api/tasks");
+    const res = await axios.get(`${API_URL}/tasks`);
     setTasks(res.data);
   };
 
   const addTask = async () => {
     if (!title.trim()) return;
-    await axios.post("http://localhost:5000/api/tasks", { title });
+    await axios.post(`${API_URL}/tasks`, { title });
     setTitle("");
     fetchTasks();
   };
 
   const toggleTask = async (id, completed) => {
-    await axios.put(`http://localhost:5000/api/tasks/${id}`, { completed });
+    await axios.put(`${API_URL}/tasks/${id}`, { completed });
     fetchTasks();
   };
 
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+    await axios.delete(`${API_URL}/tasks/${id}`);
     fetchTasks();
   };
 
